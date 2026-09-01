@@ -27,6 +27,7 @@ first reading application source. Read the documents in the order below.
    [application inventory](generated/application-inventory.md) — exact
    structural facts derived from current source.
 9. [Deployment guide](development/DEPLOYMENT.md),
+   [release maintenance](development/RELEASE_MAINTENANCE.md),
    [generated configuration inventory](generated/configuration.md), and
    [generated deployment topology](generated/deployment-topology.md) —
    operator contract and repository-defined runtime topology.

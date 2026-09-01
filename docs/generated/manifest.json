@@ -1,11 +1,13 @@
 {
-  "generated_content_sha256": "c6c5d403aa4da88fbc8833ba78890c27ade012941953d844a22b8b634f4952c7",
+  "generated_content_sha256": "710a633ccc020e5d914acc446f772e2abf9ff8c28e13c947eae85239f926d0b9",
   "generator_version": 1,
   "inputs": [
     ".env.example",
     ".github/workflows/ci.yml",
+    ".github/workflows/release-dry-run.yml",
     "accounts/models.py",
     "accounts/urls.py",
+    "build/lib/config/settings.py",
     "compose.vnext-lab.yaml",
     "compose.yaml",
     "config/settings.py",

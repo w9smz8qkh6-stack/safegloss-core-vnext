@@ -11,6 +11,9 @@ The project follows semantic versioning after the first stable release. During a
 - Added an installable SafeGloss Core source/wheel distribution with a
   `safegloss-core` management command, package-owned Django assets, and CI
   proof that clean PostgreSQL self-hosting works from both artifact formats.
+- Added a dry-run-only release-verification workflow that creates checksums,
+  CycloneDX SBOM evidence, and artifact attestations while refusing tags,
+  releases, package publication, Hosted changes, and deployment.
 
 ### Changed
 
