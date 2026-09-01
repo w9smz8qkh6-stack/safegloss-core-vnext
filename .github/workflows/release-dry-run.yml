@@ -63,6 +63,7 @@ jobs:
           set -euo pipefail
           git fetch origin main --tags --force
           test "$(git rev-parse "$SOURCE_SHA^{commit}")" = "$(git rev-parse origin/main)"
+          ! git rev-parse --verify --quiet "refs/tags/v$VERSION"
           test -z "$(git tag --points-at "$SOURCE_SHA" --list 'v*')"
           python - <<'PY'
           import os

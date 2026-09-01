@@ -47,6 +47,8 @@ The project follows semantic versioning after the first stable release. During a
   separate reviewed Core-to-Hosted integration step.
 - Clarified that protected `main` changes use scoped task branches, pull requests, and
   required checks; administrator bypass is not part of the standing cadence.
+- Made generated-documentation discovery ignore local build outputs, keeping
+  committed references reproducible in clean CI checkouts.
 
 ## 0.1.0 - 2026-08-15
 
