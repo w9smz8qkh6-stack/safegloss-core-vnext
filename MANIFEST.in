@@ -1,0 +1,3 @@
+include LICENSE README.md requirements.txt requirements-dev.txt
+recursive-include config/templates *.html
+recursive-include config/static *

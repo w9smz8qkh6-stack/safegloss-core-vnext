@@ -72,6 +72,28 @@ python scripts/check_documentation_links.py
 python scripts/check_documentation_updates.py
 ```
 
+## Install from a built artifact
+
+Core is not yet published to a package index. A reviewed source distribution
+or wheel can nevertheless be installed into a self-hosted Python environment:
+
+```bash
+python -m pip install safegloss_core-0.1.0-py3-none-any.whl
+export DJANGO_SECRET_KEY="replace-with-a-long-random-secret"
+export DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/safegloss"
+export ALLOWED_HOSTS="glossary.example.edu"
+export STATIC_ROOT="/srv/safegloss/staticfiles"
+safegloss-core migrate --noinput
+safegloss-core seed_languages
+safegloss-core collectstatic --noinput
+```
+
+Use `safegloss-core` in place of `python manage.py` after installation. Build
+artifacts locally with `python -m build`; CI installs both the wheel and source
+distribution into clean environments and smoke-tests them against PostgreSQL.
+Artifact publication, version tags, and Hosted dependency pinning are separate
+reviewed work.
+
 ## CSV format
 
 The only required column is `phrase`. Supported optional columns are:
@@ -93,7 +115,8 @@ accounts/   email authentication, roles, language preference
 core/       languages, subjects, landing page, dashboard
 courses/    courses, rosters, enrollment, glossary links, mode scheduling
 glossary/   glossaries, terms, translations, import/export, student views
-config/     vendor-neutral Django configuration
+config/     vendor-neutral Django configuration and package-owned assets
+safegloss_core/ public distribution and command-line entry point
 ```
 
 The architectural boundary and exclusions are recorded in [ADR-0001](docs/decisions/0001-public-core-boundary.md).

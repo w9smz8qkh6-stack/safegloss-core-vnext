@@ -5,6 +5,29 @@ description = "Self-hosted multilingual glossary and exam-access support for sch
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
+dependencies = [
+    "Django>=5.2,<5.3",
+    "django-environ>=0.12,<0.13",
+    "gunicorn>=23,<24",
+    "psycopg[binary]>=3.3.4,<4",
+    "whitenoise>=6.9,<7",
+]
+
+[project.scripts]
+safegloss-core = "safegloss_core.cli:main"
+
+[build-system]
+requires = ["setuptools>=77", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["accounts*", "config*", "core*", "courses*", "glossary*", "safegloss_core*"]
+
+[tool.setuptools.package-data]
+config = ["templates/**/*.html", "static/**/*"]
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "config.settings"

@@ -14,6 +14,7 @@ documented in the authored deployment guide and `.env.example`.
 | `DJANGO_SECRET_KEY` | `.env.example`, `compose.vnext-lab.yaml`, `config/settings.py` |
 | `EMAIL_BACKEND` | `config/settings.py` |
 | `GITHUB_ACTIONS` | `scripts/check_documentation_updates.py` |
+| `RUNNER_TEMP` | `.github/workflows/ci.yml` |
 | `SAFEGLOSS_BASE_REF` | `scripts/check_documentation_updates.py` |
 | `SAFEGLOSS_VNEXT_CORE_WEB_PORT` | `compose.vnext-lab.yaml` |
 | `SAFEGLOSS_VNEXT_ENV_FILE` | `compose.vnext-lab.yaml` |
@@ -22,3 +23,4 @@ documented in the authored deployment guide and `.env.example`.
 | `SECURE_HSTS_PRELOAD` | `.env.example`, `config/settings.py` |
 | `SECURE_HSTS_SECONDS` | `.env.example`, `config/settings.py` |
 | `SECURE_SSL_REDIRECT` | `.env.example`, `config/settings.py` |
+| `STATIC_ROOT` | `config/settings.py` |
