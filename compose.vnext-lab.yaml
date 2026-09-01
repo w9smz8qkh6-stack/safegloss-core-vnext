@@ -26,6 +26,7 @@ services:
     environment:
       DEBUG: "true"
       ALLOWED_HOSTS: localhost,127.0.0.1
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Set DJANGO_SECRET_KEY in .env.vnext-lab}
       DATABASE_URL: postgresql://safegloss:${SAFEGLOSS_VNEXT_POSTGRES_PASSWORD}@db:5432/safegloss_core_vnext
     ports:
       - "127.0.0.1:${SAFEGLOSS_VNEXT_CORE_WEB_PORT:-18101}:8000"
