@@ -1,4 +1,5 @@
 .env
+.env.vnext-lab
 .venv/
 __pycache__/
 *.py[cod]

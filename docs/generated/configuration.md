@@ -15,6 +15,9 @@ documented in the authored deployment guide and `.env.example`.
 | `EMAIL_BACKEND` | `config/settings.py` |
 | `GITHUB_ACTIONS` | `scripts/check_documentation_updates.py` |
 | `SAFEGLOSS_BASE_REF` | `scripts/check_documentation_updates.py` |
+| `SAFEGLOSS_VNEXT_CORE_WEB_PORT` | `compose.vnext-lab.yaml` |
+| `SAFEGLOSS_VNEXT_ENV_FILE` | `compose.vnext-lab.yaml` |
+| `SAFEGLOSS_VNEXT_POSTGRES_PASSWORD` | `compose.vnext-lab.yaml` |
 | `SECURE_HSTS_INCLUDE_SUBDOMAINS` | `.env.example`, `config/settings.py` |
 | `SECURE_HSTS_PRELOAD` | `.env.example`, `config/settings.py` |
 | `SECURE_HSTS_SECONDS` | `.env.example`, `config/settings.py` |

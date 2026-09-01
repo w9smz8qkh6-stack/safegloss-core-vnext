@@ -23,6 +23,9 @@ contracts.
 
 ## Repository and integration posture
 
+- This is the public Core-vNext successor candidate, seeded from the annotated
+  `legacy-baseline-2026-09-01` snapshot. It has no production deployment
+  target and its local lab uses isolated named volumes and loopback-only ports.
 - Core owns functionality that is safe for a public, provider-neutral product.
   Billing, hosted-provider integrations, behavioral analytics, private
   research operations, and customer data do not belong here.
@@ -51,12 +54,11 @@ contracts.
 
 ## Active work and next checkpoint
 
-The commit containing this record includes the self-refreshing,
-self-referencing, and public-roadmap documentation baseline. When it is not yet
-on the protected default branch, the immediate delivery checkpoint is required
-review and merge before downstream Commercial integration. Do not infer whether
-that checkpoint is still open from this file; verify the current branch, pull
-requests, and CI live.
+The immediate checkpoint is the non-secret vNext bootstrap: scoped-branch CI,
+protected-main controls, and isolated empty/synthetic lab verification. Package
+publication, data restoration, Hosted composition, and production transition
+remain separate accepted work packages. Do not infer current branch, pull
+request, CI, or lab state from this file; verify it live.
 
 Use repository evidence for the active development position:
 

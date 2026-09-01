@@ -1,10 +1,11 @@
 {
-  "generated_content_sha256": "594da58a2f2a1cf9d9bbfe34fce638434427904e24ade1fd3c8278bd25b03648",
+  "generated_content_sha256": "5ea78228b7b68106a75a6bb85257afc6910bdd53f6290949c366b61436aa5587",
   "generator_version": 1,
   "inputs": [
     ".env.example",
     "accounts/models.py",
     "accounts/urls.py",
+    "compose.vnext-lab.yaml",
     "compose.yaml",
     "config/settings.py",
     "config/urls.py",
