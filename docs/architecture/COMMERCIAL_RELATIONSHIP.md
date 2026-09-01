@@ -6,11 +6,14 @@ SafeGloss Core is the public, vendor-neutral upstream. SafeGloss Commercial
 (the private hosted repository, historically named SafeGloss Unified) is the
 production downstream and product superset.
 
-Core is not installed into Commercial as a Python package at runtime. The two
-repositories have different concrete models and migration histories, so
+Core is not installed into Commercial as a Python package at runtime today. The
+two repositories have different concrete models and migration histories, so
 Commercial consumes reviewed Core commits through source-level Git merges.
 Commercial retains ownership of its production settings, URLs, concrete
-models, migrations, and hosted-only behavior.
+models, migrations, and hosted-only behavior. A future vNext compatibility
+boundary may permit Commercial to pin an immutable Core GitHub Release artifact
+by exact version and SHA-256 digest; it must arrive in a reviewable Commercial
+pull request and cannot activate before its model/migration contract is accepted.
 
 ```mermaid
 flowchart LR
