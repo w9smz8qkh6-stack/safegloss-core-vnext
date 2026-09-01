@@ -1,0 +1,38 @@
+name: safegloss-core-vnext-lab
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: safegloss_core_vnext
+      POSTGRES_USER: safegloss
+      POSTGRES_PASSWORD: ${SAFEGLOSS_VNEXT_POSTGRES_PASSWORD:?Set SAFEGLOSS_VNEXT_POSTGRES_PASSWORD in .env.vnext-lab}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U safegloss -d safegloss_core_vnext"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    command: >-
+      sh -c "python manage.py migrate --noinput &&
+      python manage.py seed_languages &&
+      python manage.py runserver 0.0.0.0:8000"
+    env_file:
+      - ${SAFEGLOSS_VNEXT_ENV_FILE:-.env.vnext-lab}
+    environment:
+      DEBUG: "true"
+      ALLOWED_HOSTS: localhost,127.0.0.1
+      DATABASE_URL: postgresql://safegloss:${SAFEGLOSS_VNEXT_POSTGRES_PASSWORD}@db:5432/safegloss_core_vnext
+    ports:
+      - "127.0.0.1:${SAFEGLOSS_VNEXT_CORE_WEB_PORT:-18101}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+    name: safegloss-core-vnext-lab-postgres-data
