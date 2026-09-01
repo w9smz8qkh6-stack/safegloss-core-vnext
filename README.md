@@ -78,7 +78,7 @@ Core is not yet published to a package index. A reviewed source distribution
 or wheel can nevertheless be installed into a self-hosted Python environment:
 
 ```bash
-python -m pip install safegloss_core-0.1.0-py3-none-any.whl
+python -m pip install safegloss_core-0.1.0a1-py3-none-any.whl
 export DJANGO_SECRET_KEY="replace-with-a-long-random-secret"
 export DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/safegloss"
 export ALLOWED_HOSTS="glossary.example.edu"

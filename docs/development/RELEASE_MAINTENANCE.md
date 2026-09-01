@@ -11,6 +11,11 @@ Dispatch `Release dry run` only with all of the following:
 2. an exact commit SHA equal to the current merged `main` tip; and
 3. a PEP 440 version equal to the version in that commit's `pyproject.toml`.
 
+The release-preparation pull request changes the package version, changelog,
+and release notes together. The initial public pre-stable candidate is
+`0.1.0a1`; this preparation does not create a tag, GitHub Release, PyPI
+publication, Hosted update, or deployment.
+
 The workflow refuses an existing `vVERSION` tag, a source SHA outside `main`, a
 version mismatch, and any request with `dry_run=false`. It builds a wheel and
 source distribution once, installs each outside the checkout against its own
