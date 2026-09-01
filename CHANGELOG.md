@@ -6,6 +6,12 @@ The project follows semantic versioning after the first stable release. During a
 
 ## Unreleased
 
+### Added
+
+- Added an installable SafeGloss Core source/wheel distribution with a
+  `safegloss-core` management command, package-owned Django assets, and CI
+  proof that clean PostgreSQL self-hosting works from both artifact formats.
+
 ### Changed
 
 - Added a canonical documentation reading path, authored system architecture,

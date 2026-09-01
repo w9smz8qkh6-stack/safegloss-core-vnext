@@ -86,6 +86,79 @@ jobs:
       - run: python -m pip install --upgrade pip pip-audit
       - run: pip-audit -r requirements.txt
 
+  package:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: safegloss_package_test
+          POSTGRES_USER: safegloss
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U safegloss"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DEBUG: "True"
+      ALLOWED_HOSTS: localhost,testserver
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Build source and wheel distributions
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
+      - name: Confirm distributions contain runtime assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          wheel = next(Path("dist").glob("*.whl"))
+          with ZipFile(wheel) as archive:
+              names = set(archive.namelist())
+          required = {
+              "config/settings.py",
+              "config/templates/base.html",
+              "config/static/css/app.css",
+              "accounts/migrations/0001_initial.py",
+              "safegloss_core/cli.py",
+          }
+          missing = required - names
+          assert not missing, f"wheel missing: {sorted(missing)}"
+          PY
+      - name: Install and smoke-test each distribution outside the checkout
+        run: |
+          set -euo pipefail
+          smoke_dir="${RUNNER_TEMP}/safegloss-package-smoke"
+          mkdir -p "$smoke_dir"
+          for artifact in dist/*.whl dist/*.tar.gz; do
+            environment="${RUNNER_TEMP}/$(basename "$artifact").venv"
+            case "$artifact" in
+              *.whl) database="safegloss_package_wheel" ;;
+              *.tar.gz) database="safegloss_package_sdist" ;;
+            esac
+            python -m venv "$environment"
+            "$environment/bin/pip" install --upgrade pip
+            "$environment/bin/pip" install "$artifact"
+            "$environment/bin/python" -c \
+              "import psycopg; connection = psycopg.connect('postgresql://safegloss@localhost:5432/postgres', autocommit=True); connection.execute('CREATE DATABASE $database')"
+            (
+              cd "$smoke_dir"
+              export DATABASE_URL="postgresql://safegloss@localhost:5432/$database"
+              PYTHONPATH="" "$environment/bin/safegloss-core" migrate --noinput
+              PYTHONPATH="" "$environment/bin/safegloss-core" seed_languages
+              PYTHONPATH="" "$environment/bin/safegloss-core" shell -c \
+                "from django.test import Client; client = Client(); assert client.get('/').status_code == 200; assert client.get('/accounts/login/').status_code == 200"
+            )
+          done
+
   secret-scan:
     runs-on: ubuntu-latest
     steps:
