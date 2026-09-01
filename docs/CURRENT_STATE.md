@@ -39,8 +39,10 @@ contracts.
 - `docs/product/ROADMAP.md` is the filtered public projection of reviewed Core
   direction. The private Commercial strategy system retains the complete
   SafeGloss-wide idea and prioritization record.
-- Protected-branch delivery uses a scoped branch, required CI, and required
-  human review. Standing delivery rules do not permit bypassing those gates.
+- Protected-branch delivery uses a scoped branch, required CI, linear history,
+  resolved conversations, and no force-push or deletion. The current GitHub
+  rule does not require a separate approving review; standing delivery rules do
+  not permit bypassing any configured gate.
 
 ## Known limitations and invariants
 
