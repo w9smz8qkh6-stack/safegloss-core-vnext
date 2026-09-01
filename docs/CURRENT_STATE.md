@@ -66,7 +66,9 @@ against PostgreSQL in the dedicated CI package job. The active release work is
 dry-run-only: it verifies source/version/tag refusal rules, artifacts,
 checksums, SBOM and provenance evidence without a tag, GitHub Release, PyPI
 configuration/upload, Hosted action, or production transition. Those remain
-separate accepted work packages. Do not infer current branch,
+separate accepted work packages. A protected release-preparation PR must first
+align the initial `0.1.0a1` version, changelog, and release notes before the
+manual dry run can execute. Do not infer current branch,
 pull request, CI, or lab state from this file; verify it live.
 
 Use repository evidence for the active development position:

@@ -6,6 +6,8 @@ The project follows semantic versioning after the first stable release. During a
 
 ## Unreleased
 
+## 0.1.0a1 - 2026-09-01
+
 ### Added
 
 - Added an installable SafeGloss Core source/wheel distribution with a
