@@ -54,11 +54,13 @@ contracts.
 
 ## Active work and next checkpoint
 
-The immediate checkpoint is the non-secret vNext bootstrap: scoped-branch CI,
-protected-main controls, and isolated empty/synthetic lab verification. Package
-publication, data restoration, Hosted composition, and production transition
-remain separate accepted work packages. Do not infer current branch, pull
-request, CI, or lab state from this file; verify it live.
+The non-secret vNext bootstrap is complete: scoped-branch CI,
+protected-main controls, and an empty/synthetic local-lab smoke test passed on
+2026-09-01. The test used ephemeral generated secrets, a vNext-only database
+volume/network, and loopback access, then removed every disposable resource.
+Package publication, data restoration, Hosted composition, and production
+transition remain separate accepted work packages. Do not infer current branch,
+pull request, CI, or lab state from this file; verify it live.
 
 Use repository evidence for the active development position:
 

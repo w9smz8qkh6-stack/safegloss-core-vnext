@@ -11,7 +11,7 @@ documented in the authored deployment guide and `.env.example`.
 | `CSRF_TRUSTED_ORIGINS` | `config/settings.py` |
 | `DATABASE_URL` | `.env.example`, `config/settings.py` |
 | `DEBUG` | `.env.example`, `config/settings.py` |
-| `DJANGO_SECRET_KEY` | `.env.example`, `config/settings.py` |
+| `DJANGO_SECRET_KEY` | `.env.example`, `compose.vnext-lab.yaml`, `config/settings.py` |
 | `EMAIL_BACKEND` | `config/settings.py` |
 | `GITHUB_ACTIONS` | `scripts/check_documentation_updates.py` |
 | `SAFEGLOSS_BASE_REF` | `scripts/check_documentation_updates.py` |
