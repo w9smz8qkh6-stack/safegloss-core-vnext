@@ -79,11 +79,18 @@ jobs:
               raise SystemExit("Requested version does not match pyproject.toml.")
           PY
       - name: Build once and record checksums
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          VERSION: ${{ inputs.version }}
         run: |
           python -m pip install --upgrade pip build
           python -m build
           mkdir -p release-evidence
           sha256sum dist/* > release-evidence/SHA256SUMS
+          python scripts/generate_release_manifest.py \
+            --version "$VERSION" \
+            --source-sha "$SOURCE_SHA" \
+            --output release-evidence/safegloss-core-release.json
       - name: Verify installed artifacts against fresh PostgreSQL databases
         run: |
           set -euo pipefail

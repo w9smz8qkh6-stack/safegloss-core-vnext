@@ -91,8 +91,11 @@ safegloss-core collectstatic --noinput
 Use `safegloss-core` in place of `python manage.py` after installation. Build
 artifacts locally with `python -m build`; CI installs both the wheel and source
 distribution into clean environments and smoke-tests them against PostgreSQL.
-Artifact publication, version tags, and Hosted dependency pinning are separate
-reviewed work.
+Artifact publication and version tags remain separate reviewed work. A future
+GitHub Release carries a machine-readable manifest with the exact artifact
+digests; a private Hosted-vNext update may consume only that versioned artifact
+through its own reviewable pin-update pull request, never from a mutable branch
+or `latest` reference.
 
 ## Release dry run
 
