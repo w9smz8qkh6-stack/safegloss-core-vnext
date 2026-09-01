@@ -94,6 +94,18 @@ distribution into clean environments and smoke-tests them against PostgreSQL.
 Artifact publication, version tags, and Hosted dependency pinning are separate
 reviewed work.
 
+## Release dry run
+
+Maintainers can manually verify the immutable-release mechanism for an exact
+merged `main` commit before any public release. The workflow refuses a non-main
+commit, version mismatch, pre-existing release tag, or `dry_run=false`; it
+builds the artifacts once, smoke-tests both formats against PostgreSQL, and
+records checksums, a CycloneDX SBOM, and GitHub attestations. It cannot create a
+tag, GitHub Release, PyPI upload, Hosted update, or deployment.
+
+See [the release-maintenance guide](docs/development/RELEASE_MAINTENANCE.md)
+before dispatching it.
+
 ## CSV format
 
 The only required column is `phrase`. Supported optional columns are:

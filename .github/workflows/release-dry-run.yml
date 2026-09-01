@@ -1,0 +1,123 @@
+name: Release dry run
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Exact PEP 440 version expected in pyproject.toml.
+        required: true
+        type: string
+      source_sha:
+        description: Exact merged main commit to verify.
+        required: true
+        type: string
+      dry_run:
+        description: Must remain true; publishing is intentionally disabled.
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+
+jobs:
+  refuse-non-dry-run:
+    if: inputs.dry_run != true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refuse publishing mode
+        run: exit 1
+
+  verify-release-mechanism:
+    if: inputs.dry_run == true
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: safegloss
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U safegloss"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ inputs.source_sha }}
+          fetch-depth: 0
+          fetch-tags: true
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.12"
+      - name: Refuse an unsafe release request
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          git fetch origin main --tags --force
+          test "$(git rev-parse "$SOURCE_SHA^{commit}")" = "$(git rev-parse origin/main)"
+          test -z "$(git tag --points-at "$SOURCE_SHA" --list 'v*')"
+          python - <<'PY'
+          import os
+          import re
+          import tomllib
+
+          version = os.environ["VERSION"]
+          if not re.fullmatch(r"[0-9]+(?:\.[0-9]+)+(?:a[0-9]+|b[0-9]+|rc[0-9]+)?", version):
+              raise SystemExit("Requested version is not an accepted PEP 440 release version.")
+          with open("pyproject.toml", "rb") as source:
+              configured = tomllib.load(source)["project"]["version"]
+          if configured != version:
+              raise SystemExit("Requested version does not match pyproject.toml.")
+          PY
+      - name: Build once and record checksums
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
+          mkdir -p release-evidence
+          sha256sum dist/* > release-evidence/SHA256SUMS
+      - name: Verify installed artifacts against fresh PostgreSQL databases
+        run: |
+          set -euo pipefail
+          for artifact in dist/*.whl dist/*.tar.gz; do
+            environment="${RUNNER_TEMP}/$(basename "$artifact").venv"
+            database="safegloss_release_$(echo "$artifact" | sha256sum | cut -c1-12)"
+            python -m venv "$environment"
+            "$environment/bin/pip" install --upgrade pip
+            "$environment/bin/pip" install "$artifact"
+            "$environment/bin/python" -c "import psycopg; connection = psycopg.connect('postgresql://safegloss@localhost:5432/postgres', autocommit=True); connection.execute('CREATE DATABASE $database')"
+            (
+              cd "${RUNNER_TEMP}"
+              export DEBUG=True ALLOWED_HOSTS=localhost,testserver
+              export DATABASE_URL="postgresql://safegloss@localhost:5432/$database"
+              PYTHONPATH="" "$environment/bin/safegloss-core" migrate --noinput
+              PYTHONPATH="" "$environment/bin/safegloss-core" seed_languages
+              PYTHONPATH="" "$environment/bin/safegloss-core" shell -c "from django.test import Client; client = Client(); assert client.get('/').status_code == 200"
+            )
+          done
+      - name: Generate CycloneDX SBOM from the installed wheel
+        run: |
+          environment="${RUNNER_TEMP}/release-sbom.venv"
+          python -m venv "$environment"
+          "$environment/bin/pip" install dist/*.whl
+          "$environment/bin/python" scripts/generate_cyclonedx_sbom.py --output release-evidence/sbom.cdx.json
+      - name: Generate provenance and SBOM attestations
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-path: dist/*
+          sbom-path: release-evidence/sbom.cdx.json
+      - name: Upload dry-run evidence
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: safegloss-core-release-dry-run-${{ inputs.version }}
+          path: |
+            dist/*
+            release-evidence/*
+          if-no-files-found: error
