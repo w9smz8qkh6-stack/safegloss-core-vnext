@@ -7,21 +7,21 @@ documented in the authored deployment guide and `.env.example`.
 
 | Variable | Referenced by |
 |---|---|
-| `ALLOWED_HOSTS` | `.env.example`, `build/lib/config/settings.py`, `config/settings.py` |
-| `CSRF_TRUSTED_ORIGINS` | `build/lib/config/settings.py`, `config/settings.py` |
-| `DATABASE_URL` | `.env.example`, `build/lib/config/settings.py`, `config/settings.py` |
-| `DEBUG` | `.env.example`, `build/lib/config/settings.py`, `config/settings.py` |
-| `DJANGO_SECRET_KEY` | `.env.example`, `build/lib/config/settings.py`, `compose.vnext-lab.yaml`, `config/settings.py` |
-| `EMAIL_BACKEND` | `build/lib/config/settings.py`, `config/settings.py` |
+| `ALLOWED_HOSTS` | `.env.example`, `config/settings.py` |
+| `CSRF_TRUSTED_ORIGINS` | `config/settings.py` |
+| `DATABASE_URL` | `.env.example`, `config/settings.py` |
+| `DEBUG` | `.env.example`, `config/settings.py` |
+| `DJANGO_SECRET_KEY` | `.env.example`, `compose.vnext-lab.yaml`, `config/settings.py` |
+| `EMAIL_BACKEND` | `config/settings.py` |
 | `GITHUB_ACTIONS` | `scripts/check_documentation_updates.py` |
 | `RUNNER_TEMP` | `.github/workflows/ci.yml`, `.github/workflows/release-dry-run.yml` |
 | `SAFEGLOSS_BASE_REF` | `scripts/check_documentation_updates.py` |
 | `SAFEGLOSS_VNEXT_CORE_WEB_PORT` | `compose.vnext-lab.yaml` |
 | `SAFEGLOSS_VNEXT_ENV_FILE` | `compose.vnext-lab.yaml` |
 | `SAFEGLOSS_VNEXT_POSTGRES_PASSWORD` | `compose.vnext-lab.yaml` |
-| `SECURE_HSTS_INCLUDE_SUBDOMAINS` | `.env.example`, `build/lib/config/settings.py`, `config/settings.py` |
-| `SECURE_HSTS_PRELOAD` | `.env.example`, `build/lib/config/settings.py`, `config/settings.py` |
-| `SECURE_HSTS_SECONDS` | `.env.example`, `build/lib/config/settings.py`, `config/settings.py` |
-| `SECURE_SSL_REDIRECT` | `.env.example`, `build/lib/config/settings.py`, `config/settings.py` |
-| `STATIC_ROOT` | `build/lib/config/settings.py`, `config/settings.py` |
+| `SECURE_HSTS_INCLUDE_SUBDOMAINS` | `.env.example`, `config/settings.py` |
+| `SECURE_HSTS_PRELOAD` | `.env.example`, `config/settings.py` |
+| `SECURE_HSTS_SECONDS` | `.env.example`, `config/settings.py` |
+| `SECURE_SSL_REDIRECT` | `.env.example`, `config/settings.py` |
+| `STATIC_ROOT` | `config/settings.py` |
 | `VERSION` | `.github/workflows/release-dry-run.yml` |

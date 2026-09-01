@@ -69,6 +69,10 @@ same deterministic check. A passing generator proves only that extracted facts
 are current; it cannot explain intent or determine whether authored prose is
 semantically complete.
 
+The generator deliberately excludes local build and packaging outputs (such as
+`build/` and `.eggs/`) so its results describe the committed source tree and
+remain identical in a clean CI checkout.
+
 Never hand-edit `docs/generated/`. Change the source or generator, regenerate,
 and review the result. Generated topology describes committed configuration,
 not live deployment health or provider state.

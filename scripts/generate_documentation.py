@@ -28,10 +28,12 @@ RELATION_FIELDS = {"ForeignKey", "ManyToManyField", "OneToOneField"}
 SOURCE_SUFFIXES = {".py", ".sh", ".yaml", ".yml"}
 IGNORED_PARTS = {
     ".git",
+    ".eggs",
     ".pytest_cache",
     ".ruff_cache",
     ".venv",
     "__pycache__",
+    "build",
     "docs",
     "migrations",
     "node_modules",
