@@ -1,7 +1,7 @@
 import uuid
 
 from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import AbstractUser, Group, Permission
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
@@ -11,9 +11,10 @@ class UserManager(BaseUserManager):
     use_in_migrations = True
 
     def create_user(self, email, password=None, **extra_fields):
+        email = email.strip() if isinstance(email, str) else email
         if not email:
             raise ValueError("Users must have an email address.")
-        email = self.normalize_email(email.strip())
+        email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
@@ -42,7 +43,7 @@ class User(AbstractUser):
     email = models.EmailField(unique=True)
     display_name = models.CharField(max_length=150, blank=True)
     groups = models.ManyToManyField(
-        Group,
+        "auth.Group",
         verbose_name="groups",
         blank=True,
         help_text=(
@@ -54,7 +55,7 @@ class User(AbstractUser):
         db_table="safegloss_core_identity_user_groups",
     )
     user_permissions = models.ManyToManyField(
-        Permission,
+        "auth.Permission",
         verbose_name="user permissions",
         blank=True,
         help_text="Specific permissions for this user.",

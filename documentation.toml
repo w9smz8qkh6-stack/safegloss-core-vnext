@@ -3,3 +3,4 @@ settings_path = "config/settings.py"
 root_urlconf = "config/urls.py"
 compose_files = ["compose.yaml"]
 generated_directory = "docs/generated"
+packaged_django_apps = ["safegloss_core_identity"]

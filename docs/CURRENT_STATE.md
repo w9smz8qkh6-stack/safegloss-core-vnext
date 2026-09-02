@@ -67,8 +67,9 @@ migratable `safegloss_core_identity` package now stages the successor
 email-login UUID identity root and is verified from source, wheel, and sdist on
 PostgreSQL 16. It is not installed by the default settings, which still select
 `accounts.User`; no current account or application behavior has been migrated.
-The next identity checkpoint is a separately reviewed composition and data
-migration package. The active release work is
+The successor first needs its catalogue foundation and then its profile and
+membership layers; assembled composition and data migration remain later,
+separately reviewed checkpoints. The active release work is
 dry-run-only: it verifies source/version/tag refusal rules, artifacts,
 checksums, SBOM and provenance evidence without a tag, GitHub Release, PyPI
 configuration/upload, Hosted action, or production transition. Those remain

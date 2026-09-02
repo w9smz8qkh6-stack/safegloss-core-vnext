@@ -1,6 +1,6 @@
 {
-  "generated_content_sha256": "e28341db85cd715129ce54062451709e3b041fcd4fb65fb6c0cd95f1d7335e41",
-  "generator_version": 1,
+  "generated_content_sha256": "cf40de43a622f745b5a1d2d7ac387ca977f26626d22d07af4348c410106a98c3",
+  "generator_version": 2,
   "inputs": [
     ".env.example",
     ".github/workflows/ci.yml",
@@ -20,6 +20,7 @@
     "glossary/models.py",
     "glossary/urls.py",
     "identity_tests/settings.py",
+    "safegloss_core_identity/models.py",
     "scripts/check_documentation_updates.py",
     "scripts/generate_documentation.py"
   ],

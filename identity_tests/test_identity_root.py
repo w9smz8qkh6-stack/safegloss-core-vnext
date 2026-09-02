@@ -47,8 +47,9 @@ def test_manager_normalizes_email_and_hashes_password():
 def test_manager_rejects_missing_email_and_invalid_superuser_flags():
     user_model = get_user_model()
 
-    with pytest.raises(ValueError, match="email"):
-        user_model.objects.create_user("")
+    for missing_email in ("", "   ", None):
+        with pytest.raises(ValueError, match="email"):
+            user_model.objects.create_user(missing_email)
     with pytest.raises(ValueError, match="is_staff"):
         user_model.objects.create_superuser("admin@example.com", "password", is_staff=False)
     with pytest.raises(ValueError, match="is_superuser"):

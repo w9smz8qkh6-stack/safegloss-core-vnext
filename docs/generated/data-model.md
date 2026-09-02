@@ -2,6 +2,7 @@
 # Generated data model
 
 This field and relationship inventory is generated from SafeGloss Core model declarations.
+It includes default-runtime apps and explicitly configured packaged dormant apps.
 It describes repository structure, not production row counts or live data.
 
 ## Relationship diagram
@@ -20,6 +21,9 @@ direction LR
   class glossary_Glossary["glossary.Glossary"]
   class glossary_Term["glossary.Term"]
   class glossary_TermTranslation["glossary.TermTranslation"]
+  class safegloss_core_identity_User["safegloss_core_identity.User"]
+  class auth_Group["auth.Group"]
+  class auth_Permission["auth.Permission"]
   accounts_User --> core_Language : native_language
   courses_Course --> accounts_User : teacher
   courses_Course --> core_Subject : subject
@@ -39,6 +43,8 @@ direction LR
   glossary_Term --> glossary_Glossary : glossary
   glossary_TermTranslation --> core_Language : language
   glossary_TermTranslation --> glossary_Term : term
+  safegloss_core_identity_User -- auth_Group : groups
+  safegloss_core_identity_User -- auth_Permission : user_permissions
 ```
 
 ## `accounts`
@@ -158,3 +164,15 @@ direction LR
 | `language` | `ForeignKey` | `core.Language` | no |
 | `text` | `CharField` | — | no |
 | `example` | `TextField` | — | no |
+
+## `safegloss_core_identity` — packaged dormant
+
+### `safegloss_core_identity.User`
+
+| Field | Type | Relation target | Database null allowed |
+|---|---|---|---|
+| `id` | `UUIDField` | — | no |
+| `email` | `EmailField` | — | no |
+| `display_name` | `CharField` | — | no |
+| `groups` | `ManyToManyField` | `auth.Group` | no |
+| `user_permissions` | `ManyToManyField` | `auth.Permission` | no |
