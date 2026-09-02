@@ -14,6 +14,14 @@ only presentation and is never the security boundary.
   permissions. Staff status does not automatically bypass every object-owner
   query in ordinary teacher mutation views.
 
+These rules describe the current application and `accounts.User`. The dormant
+`safegloss_core_identity.User` package has no product-role, organization,
+membership, entitlement, provider, or legacy-privilege fields and is not
+selected by the default settings. Its manager hashes credentials, requires an
+email identifier, and refuses malformed superuser flags; it does not import or
+infer authority. Activating a successor authorization model is a later
+reviewed composition and data-migration change, not part of this identity root.
+
 ## Capability matrix
 
 | Capability | Anonymous | Student | Teacher | Staff/admin |

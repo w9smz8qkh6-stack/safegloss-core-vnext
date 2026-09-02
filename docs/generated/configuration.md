@@ -9,7 +9,7 @@ documented in the authored deployment guide and `.env.example`.
 |---|---|
 | `ALLOWED_HOSTS` | `.env.example`, `config/settings.py` |
 | `CSRF_TRUSTED_ORIGINS` | `config/settings.py` |
-| `DATABASE_URL` | `.env.example`, `config/settings.py` |
+| `DATABASE_URL` | `.env.example`, `config/settings.py`, `identity_tests/settings.py` |
 | `DEBUG` | `.env.example`, `config/settings.py` |
 | `DJANGO_SECRET_KEY` | `.env.example`, `compose.vnext-lab.yaml`, `config/settings.py` |
 | `EMAIL_BACKEND` | `config/settings.py` |

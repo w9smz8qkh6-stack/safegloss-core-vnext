@@ -62,7 +62,14 @@ protected-main controls, and an empty/synthetic local-lab smoke test passed on
 volume/network, and loopback access, then removed every disposable resource.
 Core packaging establishes an installable artifact with package-owned
 templates/static assets and verifies wheel and source-distribution self-hosting
-against PostgreSQL in the dedicated CI package job. The active release work is
+against PostgreSQL in the dedicated CI package job. A dormant, independently
+migratable `safegloss_core_identity` package now stages the successor
+email-login UUID identity root and is verified from source, wheel, and sdist on
+PostgreSQL 16. It is not installed by the default settings, which still select
+`accounts.User`; no current account or application behavior has been migrated.
+The successor first needs its catalogue foundation and then its profile and
+membership layers; assembled composition and data migration remain later,
+separately reviewed checkpoints. The active release work is
 dry-run-only: it verifies source/version/tag refusal rules, artifacts,
 checksums, SBOM and provenance evidence without a tag, GitHub Release, PyPI
 configuration/upload, Hosted action, or production transition. Those remain

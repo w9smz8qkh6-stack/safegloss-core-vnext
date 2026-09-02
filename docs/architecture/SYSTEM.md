@@ -53,6 +53,15 @@ generated in [deployment topology](../generated/deployment-topology.md).
 | `glossary` | Glossaries, terms, translations, CSV exchange, student glossary rendering | accounts, core, courses |
 | `config` | Settings, root routing, WSGI/ASGI entry points | all installed modules |
 
+The distribution also contains the dormant `safegloss_core_identity` app. It
+defines the successor composition's minimal email-login identity root with a
+UUID primary key and its own initial migration. It is deliberately absent from
+the default `INSTALLED_APPS`, and the default application continues to use
+`accounts.User`; therefore installing this version does not switch identity,
+create successor tables, or migrate existing accounts. Only isolated contract
+settings select the new user model. Activation, legacy-profile extraction, and
+data movement are separate reviewed changes.
+
 The current installed-app and cross-app relationship diagram is generated in
 [application inventory](../generated/application-inventory.md). Model fields
 and relations are generated in [data model](../generated/data-model.md).
@@ -114,6 +123,12 @@ enrollment per course/student, one course/glossary link, unique phrases within
 a glossary, and one translation per term/language. A roster assigned to an
 enrollment must belong to the same course. A scheduled Exam Mode window must
 end after it starts.
+
+The staged identity root uses fixed, namespaced table names and a stable
+`sgc_user_email_uq` PostgreSQL constraint. Its first migration depends only on
+Django auth. This keeps its schema history independent of the current Core
+domain graph and makes future composition explicit rather than coupling it to
+the legacy account migration.
 
 The application stores account identifiers and authored classroom data. It
 does not ship a production backup scheduler. Operators own database backup,

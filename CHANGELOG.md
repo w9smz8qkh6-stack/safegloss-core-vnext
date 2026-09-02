@@ -6,6 +6,20 @@ The project follows semantic versioning after the first stable release. During a
 
 ## Unreleased
 
+### Added
+
+- Added a dormant `safegloss_core_identity` package containing the staged
+  successor identity root: a minimal email-login user with a UUID primary key,
+  isolated PostgreSQL migration history, and artifact-level CI evidence. The
+  current application continues to use `accounts.User` until a separately
+  reviewed composition and data-migration package activates the successor.
+
+### Changed
+
+- Pinned Django to the reviewed `5.2.17` security release and added PostgreSQL
+  16 identity-contract checks while retaining the existing PostgreSQL 17
+  application and package checks.
+
 ## 0.1.0a1 - 2026-09-01
 
 ### Added

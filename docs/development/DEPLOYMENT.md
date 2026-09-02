@@ -25,6 +25,13 @@ static source assets. It does not include a database, media uploads, secrets,
 or any Hosted implementation. Package-index publication and Hosted version
 selection are intentionally outside this initial artifact contract.
 
+The artifact also contains `safegloss_core_identity`, a dormant successor
+identity app. The packaged `safegloss-core` command continues to load the
+default settings and `accounts.User`, so ordinary installation and migration do
+not create or activate successor identity tables. Selecting the staged app
+requires a separately reviewed settings composition and data-migration plan;
+self-hosters must not switch `AUTH_USER_MODEL` in an established database.
+
 ## Release sequence
 
 1. Back up the PostgreSQL database.

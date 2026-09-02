@@ -11,6 +11,7 @@ flowchart LR
   core["core"]
   courses["courses"]
   glossary["glossary"]
+  safegloss_core_identity["safegloss_core_identity"]
   accounts --> core
   courses --> accounts
   courses --> core
@@ -21,12 +22,16 @@ flowchart LR
 
 ## Django applications
 
-| Application | Models |
-|---|---:|
-| `accounts` | 1 |
-| `core` | 2 |
-| `courses` | 5 |
-| `glossary` | 3 |
+The default-runtime apps come from `config.settings`; packaged dormant apps are
+distributed but are not selected by those settings.
+
+| Application | Runtime status | Models |
+|---|---|---:|
+| `accounts` | default runtime | 1 |
+| `core` | default runtime | 2 |
+| `courses` | default runtime | 5 |
+| `glossary` | default runtime | 3 |
+| `safegloss_core_identity` | packaged dormant | 1 |
 
 ## Service modules
 
