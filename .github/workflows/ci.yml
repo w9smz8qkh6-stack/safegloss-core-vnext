@@ -74,6 +74,59 @@ jobs:
       - run: ruff check .
       - run: ruff format --check .
 
+  identity-root:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.12", "3.13", "3.14"]
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: safegloss_identity_test
+          POSTGRES_USER: safegloss
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U safegloss"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      DATABASE_URL: postgresql://safegloss@localhost:5432/safegloss_identity_test
+      DJANGO_SETTINGS_MODULE: identity_tests.settings
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m django check
+      - run: python -m django makemigrations --check --dry-run
+      - run: python -m django migrate --noinput
+      - run: pytest -c identity_tests/pytest.ini identity_tests
+      - name: Prove the identity migration reverses and replays
+        run: |
+          python -m django migrate safegloss_core_identity zero --noinput
+          python - <<'PY'
+          import os
+          import django
+
+          os.environ.setdefault("DJANGO_SETTINGS_MODULE", "identity_tests.settings")
+          django.setup()
+          from django.db import connection
+
+          with connection.cursor() as cursor:
+              tables = set(connection.introspection.table_names(cursor))
+          assert not any(name.startswith("safegloss_core_identity_") for name in tables)
+          PY
+          python -m django migrate safegloss_core_identity --noinput
+
   dependency-audit:
     runs-on: ubuntu-latest
     steps:
@@ -128,6 +181,7 @@ jobs:
               "config/templates/base.html",
               "config/static/css/app.css",
               "accounts/migrations/0001_initial.py",
+              "safegloss_core_identity/migrations/0001_user.py",
               "safegloss_core/cli.py",
           }
           missing = required - names
@@ -156,6 +210,96 @@ jobs:
               PYTHONPATH="" "$environment/bin/safegloss-core" seed_languages
               PYTHONPATH="" "$environment/bin/safegloss-core" shell -c \
                 "from django.test import Client; client = Client(); assert client.get('/').status_code == 200; assert client.get('/accounts/login/').status_code == 200"
+            )
+          done
+
+  identity-package:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: safegloss
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U safegloss"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+      - name: Build source and wheel distributions
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
+      - name: Install and verify the identity root from each distribution
+        run: |
+          set -euo pipefail
+          smoke_dir="${RUNNER_TEMP}/safegloss-identity-package-smoke"
+          mkdir -p "$smoke_dir"
+          cp scripts/identity_artifact_settings.py "$smoke_dir/"
+          for artifact in dist/*.whl dist/*.tar.gz; do
+            environment="${RUNNER_TEMP}/identity-$(basename "$artifact").venv"
+            case "$artifact" in
+              *.whl) database="safegloss_identity_wheel" ;;
+              *.tar.gz) database="safegloss_identity_sdist" ;;
+            esac
+            python -m venv "$environment"
+            "$environment/bin/pip" install --upgrade pip
+            "$environment/bin/pip" install "$artifact"
+            "$environment/bin/python" -c \
+              "import psycopg; connection = psycopg.connect('postgresql://safegloss@localhost:5432/postgres', autocommit=True); connection.execute('CREATE DATABASE $database')"
+            (
+              cd "$smoke_dir"
+              export DATABASE_URL="postgresql://safegloss@localhost:5432/$database"
+              export DJANGO_SETTINGS_MODULE=identity_artifact_settings
+              PYTHONPATH="$smoke_dir" "$environment/bin/python" -m django migrate --noinput
+              PYTHONPATH="$smoke_dir" "$environment/bin/python" - <<'PY'
+          import django
+
+          django.setup()
+          from django.contrib.auth import get_user_model
+          from django.db import connection
+
+          user = get_user_model().objects.create_user(
+              "artifact@example.com", password="not-plaintext"
+          )
+          assert user.check_password("not-plaintext")
+          with connection.cursor() as cursor:
+              tables = set(connection.introspection.table_names(cursor))
+              constraints = connection.introspection.get_constraints(
+                  cursor, "safegloss_core_identity_user"
+              )
+          identity_tables = {
+              name for name in tables if name.startswith("safegloss_core_identity_")
+          }
+          assert identity_tables == {
+              "safegloss_core_identity_user",
+              "safegloss_core_identity_user_groups",
+              "safegloss_core_identity_user_permissions",
+          }
+          assert constraints["sgc_user_email_uq"]["unique"] is True
+          PY
+              PYTHONPATH="$smoke_dir" "$environment/bin/python" -m django \
+                migrate safegloss_core_identity zero --noinput
+              PYTHONPATH="$smoke_dir" "$environment/bin/python" - <<'PY'
+          import django
+
+          django.setup()
+          from django.db import connection
+
+          with connection.cursor() as cursor:
+              tables = set(connection.introspection.table_names(cursor))
+          assert not any(name.startswith("safegloss_core_identity_") for name in tables)
+          PY
+              PYTHONPATH="$smoke_dir" "$environment/bin/python" -m django \
+                migrate safegloss_core_identity --noinput
             )
           done
 

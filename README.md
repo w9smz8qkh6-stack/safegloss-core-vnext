@@ -72,6 +72,18 @@ python scripts/check_documentation_links.py
 python scripts/check_documentation_updates.py
 ```
 
+The distribution also carries a dormant successor identity root. Its isolated
+contract suite is intentionally separate from the current application suite:
+
+```bash
+DJANGO_SETTINGS_MODULE=identity_tests.settings \
+  pytest -c identity_tests/pytest.ini identity_tests
+```
+
+Run that suite only against disposable PostgreSQL. The default settings still
+use `accounts.User`; installing this version does not activate or migrate the
+successor identity.
+
 ## Install from a built artifact
 
 Core is not yet published to a package index. A reviewed source distribution
@@ -132,6 +144,7 @@ courses/    courses, rosters, enrollment, glossary links, mode scheduling
 glossary/   glossaries, terms, translations, import/export, student views
 config/     vendor-neutral Django configuration and package-owned assets
 safegloss_core/ public distribution and command-line entry point
+safegloss_core_identity/ dormant UUID identity root for a future composition
 ```
 
 The architectural boundary and exclusions are recorded in [ADR-0001](docs/decisions/0001-public-core-boundary.md).
