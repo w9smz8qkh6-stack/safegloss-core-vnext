@@ -1,3 +1,3 @@
 {% extends "base.html" %}
 {% block title %}Sign up — SafeGloss{% endblock %}
-{% block content %}<section class="narrow"><h1>Create an account</h1><form method="post" class="card form-stack">{% csrf_token %}{{ form.as_div }}<button class="button" type="submit">Create account</button></form></section>{% endblock %}
+{% block content %}<section class="narrow"><div class="page-heading"><div class="page-heading-copy"><p class="eyebrow">Get started</p><h1>Create an account</h1><p>Choose a role and language preference. You can begin with local email sign-in.</p></div></div><form method="post" class="panel form-layout">{% csrf_token %}{% include "partials/form_fields.html" with form=form %}<button class="button" type="submit">Create account</button></form></section>{% endblock %}

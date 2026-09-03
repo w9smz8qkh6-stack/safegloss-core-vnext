@@ -13,6 +13,10 @@ The project follows semantic versioning after the first stable release. During a
   isolated PostgreSQL migration history, and artifact-level CI evidence. The
   current application continues to use `accounts.User` until a separately
   reviewed composition and data-migration package activates the successor.
+- Added a documented responsive Core workspace with wide navigation rail,
+  compact intermediate navigation, narrow-screen navigation strip, semantic
+  status treatment, and accessible form-error rendering. The UI remains fully
+  self-hosted and provider-free.
 
 ### Changed
 

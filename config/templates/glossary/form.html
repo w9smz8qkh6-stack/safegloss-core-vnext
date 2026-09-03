@@ -1,2 +1,2 @@
 {% extends "base.html" %}
-{% block content %}<section class="narrow"><h1>{{ title }}</h1><form method="post" class="card form-stack">{% csrf_token %}{{ form.as_div }}<button class="button" type="submit">Save</button></form></section>{% endblock %}
+{% block content %}<section class="narrow"><div class="page-heading"><div class="page-heading-copy"><p class="eyebrow">Glossary authoring</p><h1>{{ title }}</h1><p>Fields marked required are needed to save this item.</p></div></div><form method="post" class="panel form-layout">{% csrf_token %}{% include "partials/form_fields.html" with form=form %}<div class="actions"><button class="button" type="submit">Save</button><a class="button secondary" href="javascript:history.back()">Cancel</a></div></form></section>{% endblock %}

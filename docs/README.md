@@ -19,21 +19,23 @@ first reading application source. Read the documents in the order below.
 6. [Interface standard](design/INTERFACE_STANDARD.md) — the shared accessible,
    conventional, task-first visual and interaction contract, component-choice
    rules, and WCAG conformance-claim gate.
-7. [Authorization model](security/AUTHORIZATION.md) and
+7. [Core UI implementation](design/UI_IMPLEMENTATION.md) — local UI tokens,
+   responsive behavior, and implementation review scope.
+8. [Authorization model](security/AUTHORIZATION.md) and
    [security model](development/SECURITY_MODEL.md) — roles, object-level
    enforcement, trust boundaries, and explicit security limitations.
-8. [Generated data model](generated/data-model.md),
+9. [Generated data model](generated/data-model.md),
    [route inventory](generated/routes.md), and
    [application inventory](generated/application-inventory.md) — exact
    structural facts derived from current source.
-9. [Deployment guide](development/DEPLOYMENT.md),
+10. [Deployment guide](development/DEPLOYMENT.md),
    [release maintenance](development/RELEASE_MAINTENANCE.md),
    [generated configuration inventory](generated/configuration.md), and
    [generated deployment topology](generated/deployment-topology.md) —
    operator contract and repository-defined runtime topology.
-10. [Commercial relationship](architecture/COMMERCIAL_RELATIONSHIP.md) — how
+11. [Commercial relationship](architecture/COMMERCIAL_RELATIONSHIP.md) — how
    this public upstream relates to the private hosted product.
-11. [Decision records](decisions/) and [changelog](../CHANGELOG.md) — durable
+12. [Decision records](decisions/) and [changelog](../CHANGELOG.md) — durable
    decisions and externally meaningful change history.
 
 The generated/authored documentation contract is recorded in
