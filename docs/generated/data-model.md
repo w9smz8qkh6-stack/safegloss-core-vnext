@@ -85,6 +85,7 @@ direction LR
 | `name` | `CharField` | — | no |
 | `description` | `TextField` | — | no |
 | `subject` | `ForeignKey` | `core.Subject` | yes |
+| `curriculum_context` | `JSONField` | — | no |
 | `mode` | `CharField` | — | no |
 | `exam_mode_until` | `DateTimeField` | — | yes |
 | `join_code` | `CharField` | — | no |

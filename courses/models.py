@@ -67,18 +67,28 @@ class Course(models.Model):
             return
         if not isinstance(context, dict) or context.get("schema") != "curriculum-context.v1":
             raise ValidationError(
-                {"curriculum_context": "Paste a curriculum-context.v1 package from Curriculum Expert."}
+                {
+                    "curriculum_context": (
+                        "Paste a curriculum-context.v1 package from Curriculum Expert."
+                    )
+                }
             )
         selection = context.get("selection")
         if not isinstance(selection, dict) or not all(
             isinstance(selection.get(key), list) for key in ("primary_path", "requirement_ids")
         ):
             raise ValidationError(
-                {"curriculum_context": "The selection must include primary_path and requirement_ids lists."}
+                {
+                    "curriculum_context": (
+                        "The selection must include primary_path and requirement_ids lists."
+                    )
+                }
             )
         display = context.get("display")
         if not isinstance(display, dict):
-            raise ValidationError({"curriculum_context": "The context must include display metadata."})
+            raise ValidationError(
+                {"curriculum_context": "The context must include display metadata."}
+            )
 
     @property
     def curriculum_context_label(self):

@@ -72,7 +72,12 @@ class CourseAccessTests(TestCase):
         }
         response = self.client.post(
             reverse("courses:create"),
-            {"name": "Aligned Biology", "description": "", "subject": "", "curriculum_context": json.dumps(context)},
+            {
+                "name": "Aligned Biology",
+                "description": "",
+                "subject": "",
+                "curriculum_context": json.dumps(context),
+            },
         )
         course = Course.objects.get(name="Aligned Biology")
         self.assertRedirects(response, reverse("courses:detail", args=[course.pk]))
