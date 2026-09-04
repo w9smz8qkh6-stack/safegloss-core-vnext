@@ -8,6 +8,11 @@ The project follows semantic versioning after the first stable release. During a
 
 ### Added
 
+- Courses can retain an optional validated `curriculum-context.v1` selection,
+  preserving curriculum alignment without making Core a curriculum catalogue.
+
+### Added
+
 - Added a dormant `safegloss_core_identity` package containing the staged
   successor identity root: a minimal email-login user with a UUID primary key,
   isolated PostgreSQL migration history, and artifact-level CI evidence. The

@@ -53,6 +53,10 @@ contracts.
   the health, configuration, or version of a running installation.
 - Core must remain free of credentials, production/customer/research data,
   curriculum source files, provider payloads, and Commercial-only code.
+- A teacher-managed course may retain an optional `curriculum-context.v1`
+  selection exported by an independently managed Curriculum Expert catalogue.
+  Core validates and displays this small versioned selection but does not store,
+  synchronize, or interpret a provider's taxonomy.
 
 ## Active work and next checkpoint
 

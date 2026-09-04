@@ -29,6 +29,14 @@ class Course(models.Model):
         on_delete=models.SET_NULL,
         related_name="courses",
     )
+    curriculum_context = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text=(
+            "Optional curriculum-context.v1 selection exported by Curriculum Expert. "
+            "SafeGloss stores the selection, not a copy of the provider taxonomy."
+        ),
+    )
     mode = models.CharField(max_length=12, choices=Mode.choices, default=Mode.STUDY)
     exam_mode_until = models.DateTimeField(null=True, blank=True)
     join_code = models.CharField(max_length=12, unique=True, editable=False)
@@ -51,6 +59,28 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+
+    def clean(self):
+        super().clean()
+        context = self.curriculum_context
+        if not context:
+            return
+        if not isinstance(context, dict) or context.get("schema") != "curriculum-context.v1":
+            raise ValidationError(
+                {"curriculum_context": "Paste a curriculum-context.v1 package from Curriculum Expert."}
+            )
+        selection = context.get("selection")
+        if not isinstance(selection, dict) or not all(
+            isinstance(selection.get(key), list) for key in ("primary_path", "requirement_ids")
+        ):
+            raise ValidationError(
+                {"curriculum_context": "The selection must include primary_path and requirement_ids lists."}
+            )
+
+    @property
+    def curriculum_context_label(self):
+        display = (self.curriculum_context or {}).get("display", {})
+        return display.get("course", "Curriculum context")
 
     @property
     def is_exam_mode(self):

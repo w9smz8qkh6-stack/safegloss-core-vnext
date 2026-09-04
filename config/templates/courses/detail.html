@@ -3,6 +3,7 @@
 {% block content %}
 <div class="page-heading"><div><p class="eyebrow">Course</p><h1>{{ course.name }}</h1><p>{{ course.description }}</p></div><span class="mode-badge {% if course.is_exam_mode %}exam{% endif %}">{% if course.is_exam_mode %}Exam Mode{% else %}Study Mode{% endif %}</span></div>
 {% if is_owner %}<p class="callout">Student join code: <strong>{{ course.join_code }}</strong></p>{% endif %}
+{% if course.curriculum_context %}<section class="card"><p class="eyebrow">Curriculum alignment</p><h2>{{ course.curriculum_context_label }}</h2><p>{{ course.curriculum_context.display.authority }} · {{ course.curriculum_context.display.program }} · {{ course.curriculum_context.display.course_version }}</p><p>{{ course.curriculum_context.display.requirement_labels|join:", "|default:"No specific topics or objectives selected." }}</p></section>{% endif %}
 <section><h2>Glossaries</h2><div class="card-grid">{% for link in course.course_glossaries.all %}<article class="card"><a href="{% url 'glossary:course-view' course.pk link.glossary.pk %}"><strong>{{ link.glossary.title }}</strong></a><p>{{ link.glossary.terms.count }} terms</p>{% if is_owner %}<form method="post" action="{% url 'courses:unlink-glossary' course.pk link.pk %}">{% csrf_token %}<button class="link-button danger" type="submit">Unlink</button></form>{% endif %}</article>{% empty %}<p>No glossaries have been linked.</p>{% endfor %}</div></section>
 {% if is_owner %}
 <div class="two-column">
