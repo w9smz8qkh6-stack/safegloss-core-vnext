@@ -63,6 +63,8 @@ class CourseAccessTests(TestCase):
             "display": {
                 "authority": "Example Authority",
                 "program": "Science",
+                "grade_band": "Years 10–11",
+                "subject_area": "Science and technology",
                 "course": "Biology",
                 "course_version": "2026",
                 "requirement_labels": ["Cells"],

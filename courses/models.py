@@ -76,6 +76,9 @@ class Course(models.Model):
             raise ValidationError(
                 {"curriculum_context": "The selection must include primary_path and requirement_ids lists."}
             )
+        display = context.get("display")
+        if not isinstance(display, dict):
+            raise ValidationError({"curriculum_context": "The context must include display metadata."})
 
     @property
     def curriculum_context_label(self):
