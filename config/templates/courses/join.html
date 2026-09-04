@@ -1,3 +1,3 @@
 {% extends "base.html" %}
 {% block title %}Join a course — SafeGloss{% endblock %}
-{% block content %}<section class="narrow"><h1>Join a course</h1><p>Ask your teacher for the course join code.</p><form method="post" class="card form-stack">{% csrf_token %}{{ form.as_div }}<button class="button" type="submit">Join</button></form></section>{% endblock %}
+{% block content %}<section class="narrow"><div class="page-heading"><div class="page-heading-copy"><p class="eyebrow">Learner setup</p><h1>Join a course</h1><p>Ask your teacher for the course join code. You can update your language preference later.</p></div></div><form method="post" class="panel form-layout">{% csrf_token %}{% include "partials/form_fields.html" with form=form %}<button class="button" type="submit">Join course</button></form></section>{% endblock %}

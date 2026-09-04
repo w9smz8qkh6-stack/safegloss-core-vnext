@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% block title %}Dashboard — SafeGloss{% endblock %}
 {% block content %}
-<div class="page-heading"><div><p class="eyebrow">Dashboard</p><h1>Welcome, {{ user }}</h1></div></div>
+<div class="page-heading"><div class="page-heading-copy"><p class="eyebrow">Dashboard</p><h1>Welcome, {{ user }}</h1><p>Your courses and glossaries in one place.</p></div></div>
 {% if user.is_teacher %}
-  <div class="actions"><a class="button" href="{% url 'courses:create' %}">Create course</a><a class="button secondary" href="{% url 'glossary:create' %}">Create glossary</a></div>
-  <section><h2>Your courses</h2><div class="card-grid">{% for course in courses %}<a class="card card-link" href="{% url 'courses:detail' course.pk %}"><strong>{{ course.name }}</strong><span>{{ course.course_glossaries.count }} glossar{{ course.course_glossaries.count|pluralize:"y,ies" }}</span></a>{% empty %}<p>No courses yet.</p>{% endfor %}</div></section>
-  <section><h2>Your glossaries</h2><div class="card-grid">{% for glossary in glossaries %}<a class="card card-link" href="{% url 'glossary:detail' glossary.pk %}"><strong>{{ glossary.title }}</strong><span>{{ glossary.terms.count }} terms</span></a>{% empty %}<p>No glossaries yet.</p>{% endfor %}</div></section>
+  <div class="page-actions"><a class="button" href="{% url 'courses:create' %}">Create course</a><a class="button secondary" href="{% url 'glossary:create' %}">Create glossary</a></div>
+  <section><div class="section-heading"><h2>Your courses</h2><a href="{% url 'courses:list' %}">View all</a></div><div class="card-grid">{% for course in courses %}<a class="card card-link" href="{% url 'courses:detail' course.pk %}"><div class="card-title">{{ course.name }}</div><div class="card-meta">{{ course.course_glossaries.count }} glossar{{ course.course_glossaries.count|pluralize:"y,ies" }}</div></a>{% empty %}<div class="empty-state"><h2>Create your first course</h2><p>A course gives learners a place to access your glossary.</p><a class="button small" href="{% url 'courses:create' %}">Create course</a></div>{% endfor %}</div></section>
+  <section><div class="section-heading"><h2>Your glossaries</h2><a href="{% url 'glossary:list' %}">View all</a></div><div class="card-grid">{% for glossary in glossaries %}<a class="card card-link" href="{% url 'glossary:detail' glossary.pk %}"><div class="card-title">{{ glossary.title }}</div><div class="card-meta">{{ glossary.terms.count }} terms</div></a>{% empty %}<div class="empty-state"><h2>Create your first glossary</h2><p>Start with a subject vocabulary list, then link it to a course.</p><a class="button small" href="{% url 'glossary:create' %}">Create glossary</a></div>{% endfor %}</div></section>
 {% else %}
-  <div class="actions"><a class="button" href="{% url 'courses:join' %}">Join a course</a></div>
-  <section><h2>Your courses</h2><div class="card-grid">{% for enrollment in courses %}<a class="card card-link" href="{% url 'courses:detail' enrollment.course.pk %}"><strong>{{ enrollment.course.name }}</strong><span>{{ enrollment.course.get_mode_display }}</span></a>{% empty %}<p>You have not joined a course.</p>{% endfor %}</div></section>
+  <div class="page-actions"><a class="button" href="{% url 'courses:join' %}">Join a course</a></div>
+  <section><div class="section-heading"><h2>Your courses</h2><a href="{% url 'courses:list' %}">View all</a></div><div class="card-grid">{% for enrollment in courses %}<a class="card card-link" href="{% url 'courses:detail' enrollment.course.pk %}"><div class="card-title">{{ enrollment.course.name }}</div><div class="card-meta">{{ enrollment.course.get_mode_display }}</div></a>{% empty %}<div class="empty-state"><h2>Join your first course</h2><p>Enter the course code shared by your teacher.</p><a class="button small" href="{% url 'courses:join' %}">Join course</a></div>{% endfor %}</div></section>
 {% endif %}
 {% endblock %}
