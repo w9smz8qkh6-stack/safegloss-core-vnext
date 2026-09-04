@@ -11,7 +11,14 @@ from .models import Course, CourseModeSchedule, Roster
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ("name", "description", "subject")
+        fields = ("name", "description", "subject", "curriculum_context")
+        widgets = {"curriculum_context": forms.Textarea(attrs={"rows": 10})}
+        help_texts = {
+            "curriculum_context": (
+                "Optional. Paste the metadata-only curriculum-context.v1 JSON exported "
+                "by your Curriculum Expert catalogue."
+            )
+        }
 
 
 class RosterForm(forms.ModelForm):

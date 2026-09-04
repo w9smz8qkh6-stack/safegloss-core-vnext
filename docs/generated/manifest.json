@@ -1,5 +1,5 @@
 {
-  "generated_content_sha256": "cf40de43a622f745b5a1d2d7ac387ca977f26626d22d07af4348c410106a98c3",
+  "generated_content_sha256": "eebdaca766d90b6a6c2cbc92ab3099dc60375564c4a3c17777256b344db011e2",
   "generator_version": 2,
   "inputs": [
     ".env.example",

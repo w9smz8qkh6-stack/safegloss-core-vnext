@@ -1,3 +1,4 @@
+import json
 from datetime import timedelta
 
 from django.test import TestCase
@@ -48,6 +49,48 @@ class CourseAccessTests(TestCase):
         self.client.force_login(self.student)
         response = self.client.get(reverse("courses:create"))
         self.assertEqual(response.status_code, 403)
+
+    def test_teacher_can_attach_a_curriculum_context_without_copying_taxonomy(self):
+        self.client.force_login(self.teacher)
+        context = {
+            "schema": "curriculum-context.v1",
+            "context_id": "course-version:14",
+            "catalogue_release": "course-version:14:2026-09-04T00:00:00Z",
+            "selection": {
+                "primary_path": ["authority", "program", "biology", "2026"],
+                "requirement_ids": ["requirement:12"],
+            },
+            "display": {
+                "authority": "Example Authority",
+                "program": "Science",
+                "grade_band": "Years 10–11",
+                "subject_area": "Science and technology",
+                "course": "Biology",
+                "course_version": "2026",
+                "requirement_labels": ["Cells"],
+            },
+        }
+        response = self.client.post(
+            reverse("courses:create"),
+            {
+                "name": "Aligned Biology",
+                "description": "",
+                "subject": "",
+                "curriculum_context": json.dumps(context),
+            },
+        )
+        course = Course.objects.get(name="Aligned Biology")
+        self.assertRedirects(response, reverse("courses:detail", args=[course.pk]))
+        self.assertEqual(
+            course.curriculum_context["selection"]["requirement_ids"], ["requirement:12"]
+        )
+
+    def test_course_rejects_an_unversioned_curriculum_payload(self):
+        course = Course(
+            teacher=self.teacher, name="Biology", curriculum_context={"schema": "other"}
+        )
+        with self.assertRaises(Exception):
+            course.full_clean()
 
 
 class ExamModeTests(TestCase):
