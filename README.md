@@ -1,5 +1,9 @@
 # SafeGloss Core
 
+> **Deprecated:** This vNext successor is retained only as historical reference.
+> New ground-up SafeGloss work belongs in the private `safegloss-ground-up`
+> repository.
+
 SafeGloss Core is a self-hosted multilingual glossary and exam-access support application for schools. Teachers create subject glossaries, connect them to courses, and give each learner a preferred translation language. During Exam Mode, students see only approved bilingual term pairs.
 
 This repository is the vendor-neutral public core. It does not include the original dissertation research instrument, reading and quiz system, commercial billing, hosted-service configuration, behavioral analytics, or provider-specific roster integrations.
